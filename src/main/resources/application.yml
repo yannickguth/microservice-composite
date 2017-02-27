@@ -15,13 +15,13 @@ endpoints:
     info:
       enabled: true
 
-server:
-    port: 8083
-
 ---
 # For deployment without Docker containers
 spring:
   profiles: default
+
+server:
+    port: 8083
 
 hostnames:
   events: localhost:8082
@@ -33,6 +33,9 @@ hostnames:
 # For deployment in Docker containers
 spring:
   profiles: docker
+
+server:
+    port: 80
 
 hostnames:
   events: events
