@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("se.transmode.gradle:gradle-docker:1.2")
+	}
+}
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+apply plugin: 'docker'
+
+distDocker {
+	exposePort 8082
+	//setEnvironment 'JAVA_OPTS', '-Dspring.profiles.active=docker'
+}
+
+docker {
+	maintainer = 'Yannick Guth <yannick.guth@adesso.de>'
+	baseImage = 'java:8'
+}
+
+jar {
+	baseName = 'microservice-composite'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	//compile("org.springframework.cloud:spring-cloud-starter-hystrix")
+}
