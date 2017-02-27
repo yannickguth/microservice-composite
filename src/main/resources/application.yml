@@ -18,7 +18,23 @@ endpoints:
 server:
     port: 8083
 
+---
+# For deployment without Docker containers
+spring:
+  profiles: default
+
 hostnames:
   events: localhost:8082
   locations: localhost:8081
   tickets: localhost:8080
+
+
+---
+# For deployment in Docker containers
+spring:
+  profiles: docker
+
+hostnames:
+  events: events
+  locations: locations
+  tickets: tickets
