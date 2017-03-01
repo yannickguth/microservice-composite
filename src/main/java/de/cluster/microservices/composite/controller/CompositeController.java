@@ -36,12 +36,6 @@ public class CompositeController {
     @Autowired
     CompositeIntegration integration;
 
-    @RequestMapping("/")
-    public String getTicket() {
-        return "{\"timestamp\":\"" + new Date() + "\",\"content\":\"Hello from CompositeAPI\"}";
-    }
-    
-
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
     	return integration.getCompositeEvents();
@@ -63,66 +57,5 @@ public class CompositeController {
     public ResponseEntity<CompositeEvent[]> modifyCompositeEvent(@RequestBody CompositeEvent compositeEvent) {
     	return null;
     }
-    
-    /*
-
-    @RequestMapping(value = "/events/{eventId}", method = RequestMethod.DELETE)
-    public ResponseEntity<CompositeEvent[]> deleteCompositeEvent(@PathVariable String eventId) {
-    	return null;
-    }
-         
-    @RequestMapping(value = "/events/{eventId}", method = RequestMethod.GET)
-    public ResponseEntity<CompositeEvent> getEvent(@PathVariable String eventId) {
-    	return integration.getCompositeEvent(eventId);
-    }
-    
-    @RequestMapping(value = "/locations", method = RequestMethod.GET)
-    public ResponseEntity<Location> getLocations() {
-    	return null;
-    }
-    
-    @RequestMapping("/tickets/{ticketId}")
-    public ResponseEntity<Ticket> getTicket(@PathVariable int ticketId) {
-
-        // 1. First get mandatory ticket information
-        ResponseEntity<Ticket> ticketResult = integration.getTicket(ticketId);
-
-        if (!ticketResult.getStatusCode().is2xxSuccessful()) {
-            // We can't proceed, return whatever fault we got from the getTicket call
-            return util.createResponse(null, ticketResult.getStatusCode());
-        }
-        
-        /*
-
-        // 2. Get optional recommendations
-        List<Recommendation> recommendations = null;
-        try {
-            ResponseEntity<List<Recommendation>> recommendationResult = integration.getRecommendations(productId);
-            if (!recommendationResult.getStatusCode().is2xxSuccessful()) {
-                // Something went wrong with getRecommendations, simply skip the recommendation-information in the response
-                LOG.debug("Call to getRecommendations failed: {}", recommendationResult.getStatusCode());
-            } else {
-                recommendations = recommendationResult.getBody();
-            }
-        } catch (Throwable t) {
-            LOG.error("getProduct erro ", t);
-            throw t;
-        }
-
-
-        // 3. Get optional reviews
-        ResponseEntity<List<Review>> reviewsResult = integration.getReviews(productId);
-        List<Review> reviews = null;
-        if (!reviewsResult.getStatusCode().is2xxSuccessful()) {
-            // Something went wrong with getReviews, simply skip the review-information in the response
-            LOG.debug("Call to getReviews failed: {}", reviewsResult.getStatusCode());
-        } else {
-            reviews = reviewsResult.getBody();
-        }
-        
-
-        return util.createOkResponse(ticketResult.getBody());
-    }
-    */   
     
 }
