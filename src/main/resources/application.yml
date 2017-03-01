@@ -5,16 +5,6 @@ spring:
     application:
         name: events
 
-endpoints:
-    restart:
-        enabled: true
-    shutdown:
-        enabled: true
-    health:
-        sensitive: false
-    info:
-      enabled: true
-
 ---
 # For deployment without Docker containers
 spring:
