@@ -1,5 +1,9 @@
 package de.cluster.microservices.composite.service;
 
+import de.cluster.microservices.composite.model.CompositeEvent;
+import de.cluster.microservices.composite.model.Event;
+import de.cluster.microservices.composite.model.Location;
+import de.cluster.microservices.composite.model.Ticket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import de.cluster.microservices.composite.model.CompositeEvent;
-import de.cluster.microservices.composite.model.Event;
-import de.cluster.microservices.composite.model.Location;
-import de.cluster.microservices.composite.model.Ticket;
-
 @Service
-public class CompositeIntegration {
+public class CompositeServiceImpl implements CompositeService {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(CompositeIntegration.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CompositeServiceImpl.class);
 
     @Autowired
     Util util;
@@ -35,21 +34,15 @@ public class CompositeIntegration {
 	@Value("${hostnames.tickets}")
     String ticketHost;
     
-    // -------- //
-    // EVENTS //
-    // -------- //
+    /**
+    * Get Composite Events
+	 */
     
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
-    	//Get all events
 		return processEvents(restTemplate.getForEntity("http://"+ eventHost +"/events", Event[].class));
     }
     
-
-    public ResponseEntity<CompositeEvent[]> getCompositeEventsByName(String name) {
-    	return processEvents(restTemplate.getForEntity("http://"+ eventHost +"/events/name/"+name, Event[].class));
-    }
-    
-    private ResponseEntity<CompositeEvent[]> processEvents(ResponseEntity<Event[]> revents) {
+    public ResponseEntity<CompositeEvent[]> processEvents(ResponseEntity<Event[]> revents) {
 
 			if (!revents.getStatusCode().is2xxSuccessful()) {
 				return new ResponseEntity<>(revents.getStatusCode());
@@ -84,22 +77,17 @@ public class CompositeIntegration {
 		
 		return new CompositeEvent(e, location, ticket);
     }
-    
-    /**
-     * Creates a new event. Checks if the references to locations etc. are valid, throws an exception otherwise.
-     * @param e
-     */
+
+	/**
+	 * Create Composite Event
+	 */
     public void createEvent(Event e) {
     	LOG.info("Create event "+e.getEventName());
     	validateNewEvent(e);
     	restTemplate.postForEntity("http://"+ eventHost +"/events", e, String.class);
     }
-    
-    /**
-     * Throws an exception if the event can't be created
-     * @param e
-     */
-    private void validateNewEvent(Event e) {
+
+    public void validateNewEvent(Event e) {
     	if(e == null) {
     		throw new IllegalArgumentException("No event specified.");
     	}
@@ -113,8 +101,12 @@ public class CompositeIntegration {
     	//try to get the specified location, will throw an exception otherwise
     	restTemplate.getForEntity("http://"+ locationHost +"/locations/"+e.getLocationId(), Location.class);
     }
-    
-    private Location getLocationOrNull(String locationId) {
+
+	/**
+	 * Get Locations
+	 */
+
+    public Location getLocationOrNull(String locationId) {
     	if(locationId == null) {
     		return null;
     	}
@@ -126,8 +118,12 @@ public class CompositeIntegration {
     		return null;
     	}
     }
-    
-    private Ticket getTicketOrNull(String ticketId) {
+
+	/**
+	 * Get Tickets
+	 */
+
+    public Ticket getTicketOrNull(String ticketId) {
     	if(ticketId == null) {
     		return null;
     	}
