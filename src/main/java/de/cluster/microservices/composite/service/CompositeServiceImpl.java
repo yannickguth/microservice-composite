@@ -25,6 +25,7 @@ public class CompositeServiceImpl implements CompositeService {
     @Autowired
     RestTemplate restTemplate;
 
+    // Values are located in application.yml
     @Value("${hostnames.events}")
     String eventHost;
 
@@ -63,6 +64,7 @@ public class CompositeServiceImpl implements CompositeService {
     	//Get event
     	ResponseEntity<Event> revents = restTemplate.getForEntity("http://"+ eventHost +"/events/"+eventId, Event.class);
 
+    	// return status if response is not successful
     	if(!revents.getStatusCode().is2xxSuccessful()) {
         	return new ResponseEntity<>(revents.getStatusCode());
     	}
@@ -70,7 +72,7 @@ public class CompositeServiceImpl implements CompositeService {
     	//get all dependencies
     	return new ResponseEntity<>(buildCompositeEvent(revents.getBody()), HttpStatus.OK);
     }
-    
+
     public CompositeEvent buildCompositeEvent(Event e) {
     	Location location = getLocationOrNull(e.getLocationId());
 		Ticket ticket = getTicketOrNull(e.getTicketId());
@@ -87,6 +89,7 @@ public class CompositeServiceImpl implements CompositeService {
     	restTemplate.postForEntity("http://"+ eventHost +"/events", e, String.class);
     }
 
+    // Check the validation of created events - tickets are not mandatory.
     public void validateNewEvent(Event e) {
     	if(e == null) {
     		throw new IllegalArgumentException("No event specified.");
@@ -98,7 +101,7 @@ public class CompositeServiceImpl implements CompositeService {
     		throw new IllegalArgumentException("No date specified.");
     	}
 
-    	//try to get the specified location, will throw an exception otherwise
+    	//try to get the specified location
     	restTemplate.getForEntity("http://"+ locationHost +"/locations/"+e.getLocationId(), Location.class);
     }
 
