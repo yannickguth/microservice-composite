@@ -4,6 +4,16 @@ info:
 spring:
     application:
         name: events
+    zipkin:
+        baseUrl: http://10.1.101.6:9411
+    sleuth:
+        enabled: true
+        sampler:
+            percentage: 1.0
+
+logging:
+  level:
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
 
 ---
 # For deployment without Docker containers

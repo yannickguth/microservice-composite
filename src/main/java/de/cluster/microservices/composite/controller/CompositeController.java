@@ -30,19 +30,15 @@ public class CompositeController {
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
-    	return compositeService.getCompositeEvents();
+        LOG.info("Fetching all composite-events");
+        return compositeService.getCompositeEvents();
     }
 
     @RequestMapping(value = "/events", method = RequestMethod.POST)
     public ResponseEntity<String> createEvent(@RequestBody Event e) {
-    	LOG.info("CREATE EVENT CONTROLLER");
+        LOG.info("Creating composite-event["+e+"]");
         compositeService.createEvent(e);
     	return new ResponseEntity<>("{}",HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/events", method = RequestMethod.PUT)
-    public ResponseEntity<CompositeEvent[]> modifyCompositeEvent(@RequestBody CompositeEvent compositeEvent) {
-    	return null;
     }
     
 }

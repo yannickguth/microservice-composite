@@ -8,6 +8,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("se.transmode.gradle:gradle-docker:1.2")
+		classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
 	}
 }
 
@@ -15,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'docker'
+apply plugin: "io.spring.dependency-management"
 
 distDocker {
 	exposePort 80
@@ -36,6 +38,11 @@ repositories {
 	mavenCentral()
 }
 
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.cloud:spring-cloud-sleuth:1.2.0.RELEASE'
+	}
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
@@ -43,5 +50,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
-	//compile("org.springframework.cloud:spring-cloud-starter-hystrix")
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zipkin', version: '1.2.0.RELEASE'
+
 }
