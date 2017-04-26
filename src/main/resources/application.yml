@@ -3,7 +3,7 @@ info:
 
 spring:
     application:
-        name: events
+        name: composite
     zipkin:
         baseUrl: http://10.1.101.6:9411
     sleuth:
