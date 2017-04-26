@@ -5,7 +5,7 @@ spring:
     application:
         name: composite
     zipkin:
-        baseUrl: http://10.1.101.6:9411
+        baseUrl: http://10.1.102.175:9411
     sleuth:
         enabled: true
         sampler:
