@@ -28,13 +28,13 @@ public class CompositeController {
     @Autowired
     CompositeService compositeService;
 
-    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    @RequestMapping(value = "/composite", method = RequestMethod.GET)
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
         LOG.info("Fetching all composite-events");
         return compositeService.getCompositeEvents();
     }
 
-    @RequestMapping(value = "/events", method = RequestMethod.POST)
+    @RequestMapping(value = "/composite", method = RequestMethod.POST)
     public ResponseEntity<String> createEvent(@RequestBody Event e) {
         LOG.info("Creating composite-event["+e+"]");
         compositeService.createEvent(e);
