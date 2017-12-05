@@ -41,7 +41,7 @@ public class CompositeServiceImpl implements CompositeService {
     * Get Composite Events
 	 */
 
-    @HystrixCommand (fallbackMethod = "avail")
+    @HystrixCommand (fallbackMethod = "defaultComposite")
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
 		return processEvents(restTemplate.getForEntity("http://"+ eventHost +"/events", Event[].class));
     }
@@ -63,11 +63,6 @@ public class CompositeServiceImpl implements CompositeService {
 			return new ResponseEntity<>(ces, HttpStatus.OK);
 	}
 
-	public String avail() {
-		return "Service currently unavailable";
-	}
-
-	@HystrixCommand (fallbackMethod = "avail")
     public ResponseEntity<CompositeEvent> getCompositeEvent(String eventId) {
     	//Get event
     	ResponseEntity<Event> revents = restTemplate.getForEntity("http://"+ eventHost +"/events/"+eventId, Event.class);
@@ -117,7 +112,7 @@ public class CompositeServiceImpl implements CompositeService {
 	 * Get Locations
 	 */
 
-	@HystrixCommand (fallbackMethod = "avail")
+	@HystrixCommand (fallbackMethod = "defaultLocation")
     public Location getLocationOrNull(String locationId) {
     	if(locationId == null) {
     		return null;
@@ -135,7 +130,7 @@ public class CompositeServiceImpl implements CompositeService {
 	 * Get Tickets
 	 */
 
-	@HystrixCommand (fallbackMethod = "avail")
+	@HystrixCommand (fallbackMethod = "defaultTicket")
     public Ticket getTicketOrNull(String ticketId) {
     	if(ticketId == null) {
     		return null;
@@ -149,5 +144,17 @@ public class CompositeServiceImpl implements CompositeService {
     		return null;
     	}
     }
+
+	public Ticket defaultTicket() {
+		return null;
+	}
+
+	public Ticket defaultLocation() {
+		return null;
+	}
+
+	public ResponseEntity<CompositeEvent[]> defaultComposite() {
+		return null;
+	}
 
 }
