@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.1.RELEASE'
+		springBootVersion = '1.5.9.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -8,7 +8,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("se.transmode.gradle:gradle-docker:1.2")
-		classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
+		classpath "io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE"
 	}
 }
 
@@ -40,7 +40,8 @@ repositories {
 
 dependencyManagement {
 	imports {
-		mavenBom 'org.springframework.cloud:spring-cloud-sleuth:1.2.0.RELEASE'
+//		mavenBom 'org.springframework.cloud:spring-cloud-sleuth:1.2.0.RELEASE'
+		mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE'
 	}
 }
 
