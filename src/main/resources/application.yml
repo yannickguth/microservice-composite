@@ -55,9 +55,9 @@ hostnames:
   tickets: tickets
 
 servicenames:
-  events: eventservice
-  locations: locationservice
-  tickets: ticketservice
+  events: events
+  locations: locations
+  tickets: tickets
 
 eureka:
   instance:
