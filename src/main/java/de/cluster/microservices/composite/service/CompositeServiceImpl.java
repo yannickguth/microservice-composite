@@ -1,5 +1,6 @@
 package de.cluster.microservices.composite.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.cluster.microservices.composite.model.CompositeEvent;
 import de.cluster.microservices.composite.model.Event;
 import de.cluster.microservices.composite.model.Location;
@@ -39,7 +40,8 @@ public class CompositeServiceImpl implements CompositeService {
     /**
     * Get Composite Events
 	 */
-    
+
+    @HystrixCommand (fallbackMethod = "avail")
     public ResponseEntity<CompositeEvent[]> getCompositeEvents() {
 		return processEvents(restTemplate.getForEntity("http://"+ eventHost +"/events", Event[].class));
     }
@@ -60,7 +62,12 @@ public class CompositeServiceImpl implements CompositeService {
 
 			return new ResponseEntity<>(ces, HttpStatus.OK);
 	}
-    
+
+	public String avail() {
+		return "Service currently unavailable";
+	}
+
+	@HystrixCommand (fallbackMethod = "avail")
     public ResponseEntity<CompositeEvent> getCompositeEvent(String eventId) {
     	//Get event
     	ResponseEntity<Event> revents = restTemplate.getForEntity("http://"+ eventHost +"/events/"+eventId, Event.class);
@@ -110,6 +117,7 @@ public class CompositeServiceImpl implements CompositeService {
 	 * Get Locations
 	 */
 
+	@HystrixCommand (fallbackMethod = "avail")
     public Location getLocationOrNull(String locationId) {
     	if(locationId == null) {
     		return null;
@@ -127,6 +135,7 @@ public class CompositeServiceImpl implements CompositeService {
 	 * Get Tickets
 	 */
 
+	@HystrixCommand (fallbackMethod = "avail")
     public Ticket getTicketOrNull(String ticketId) {
     	if(ticketId == null) {
     		return null;
