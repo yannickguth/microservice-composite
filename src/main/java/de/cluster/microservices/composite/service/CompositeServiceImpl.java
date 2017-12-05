@@ -25,14 +25,15 @@ public class CompositeServiceImpl implements CompositeService {
     @Autowired
     RestTemplate restTemplate;
 
+    //* Docker Variante *//
     // Values are located in application.yml
-    @Value("${hostnames.events}")
+    @Value("${servicenames.events}")
     String eventHost;
 
-	@Value("${hostnames.locations}")
+	@Value("${servicenames.locations}")
     String locationHost;
 
-	@Value("${hostnames.tickets}")
+	@Value("${servicenames.tickets}")
     String ticketHost;
     
     /**
