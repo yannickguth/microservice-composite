@@ -11,9 +11,9 @@ spring:
         sampler:
             percentage: 1.0
 
-logging:
-  level:
-    org.springframework.web.servlet.DispatcherServlet: DEBUG
+eureka:
+   instance:
+     instance-id: ${spring.application.name}:${random.int}
 
 ---
 # For deployment without Docker containers
